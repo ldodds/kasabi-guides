@@ -1,0 +1,661 @@
+<html>
+<body>
+
+<h1>Bricklink</h1>
+
+<h2>Introduction</h2>
+
+<p>
+Bricklink is a lego marketplace. Essentially it is the EBay for lego, where you can buy or sell anything 
+to do with Lego. The lego community maintain a number of fantastic resources that catalogue all of the 
+Lego products, often down to the detail of the number, colour and type of each part in a lego set.
+</p>
+
+<p>
+The bricklink website is backed by one such catalogue and it available for free download in both TSV 
+and XML formats. This dataset consists of an RDFization of that data to make it available as Linked Data 
+and accessible via the Kasabi APIs. The data has been enhanced to include EANs (product identifiers) 
+for many of the sets.
+</p>
+
+<p>
+Currently the dataset consists of descriptions of over 9000 Lego Sets and over 23,000 Lego parts.
+</p>
+
+<h2>Potential Uses</h2>
+
+<ul>
+<li>Building a lego set browser</li>
+<li>Building a lego inventory manager</li>
+<li>Building a lego project or set recommender based around identifying sets that someone may be able 
+to create with existing parts</li>
+<li>As the core of a larger dataset that aggregates additional information, e.g. inventories of 
+custom lego models produced by the community.</li>
+</ul>
+
+<h2>Data Model Diagram</h2>
+
+<p>
+The following diagram illustrates the key entities in the data model and their relationships.
+</p>
+
+<a href="datamodel.png"><img src="datamodel-small.png"/></a>
+
+<h2>Data Model</h2>
+
+<h3>Vocabularies</h3>
+
+<p>The full set of vocabularies used is as follows:</p>
+
+<table border="1">
+<tr><th>Name</th><th>Prefix</th><th>URI</th><th>Notes</th></tr>
+ <tr><td>Bricklink Vocabulary</td><td><code>brick</code></td><td><code>http://data.kasabi.com/dataset/bricklink/schema/</code></td><td>
+ Custom lego vocabulary</td></tr>
+ <tr><td>Dublin Core Terms</td><td><code>dct</code></td><td><code>http://purl.org/dc/terms/</code></td><td></td></tr>
+
+ <tr><td>FOAF</td><td><code>foaf</code></td><td><code>http://xmlns.com/foaf/0.1/</code></td><td></td></tr>
+
+ <tr><td>OWL</td><td><code>owl</code></td><td><code>http://www.w3.org/2002/07/owl#</code></td><td></td></tr>
+
+ <tr><td>RDF Schema</td><td><code>rdfs</code></td><td><code>http://www.w3.org/2000/01/rdf-schema#</code></td><td></td></tr>
+
+ <tr><td>SKOS</td><td><code>skos</code></td><td><code>http://www.w3.org/2004/02/skos/core#</code></td><td></td></tr>
+
+</table> 
+
+<p>The sections below outline which properties from these vocabularies have been used on the various entities 
+that can be found in the dataset.</p>
+
+<p>
+For readability, in the tables below, property URIs are given using their prefixed names, e.g. <code>brick:weight</code> 
+refers to: <code>http://data.kasabi.com/dataset/bricklink/schema/weight</code>.
+</p>
+
+ <h3>Book (<code>brick:Book</code>)</h3>
+
+ <p>Lego have produced a range of lego related books. Each of these books in the dataset are 
+ modelled with a type of <code>brick:Book</code>.</p>
+
+ <p>The URIs for the Book have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/book/{id}</code>
+ </blockquote>
+
+ <p>Where <code>id</code> is the unique code for the book in the lego part database</p>
+ 
+ <p>The following properties are associated with Book:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Category</td><td><code>brick:category</code></td><td>URI of the lego 
+   category associated with the book.</td>
+   
+   <tr><td>Dimension X</td><td><code>brick:dimensionX</code></td><td>Width of the book</td>
+   
+   <tr><td>Dimension Y</td><td><code>brick:dimensionY</code></td><td>Height of the book</td>
+   
+   <tr><td>Dimension Z</td><td><code>brick:dimensionZ</code></td><td>Depth of the book</td>
+   
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td>Lego part database identifier 
+   for the book</td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>Title of the book</td>
+   
+   <tr><td>Published</td><td><code>dct:published</code></td><td>Year that the book was published</td>
+   
+   <tr><td>Weight</td><td><code>brick:weight</code></td><td>Weight of the book</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Book:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/book/1030b16&gt; 
+   brick:category &lt;http://data.kasabi.com/dataset/bricklink/category/576&gt;;
+   brick:dimensionX &quot;21&quot;;
+   brick:dimensionY &quot;15&quot;;
+   brick:dimensionZ &quot;0.02&quot;;
+   brick:weight &quot;15&quot;;
+   dct:identifier &quot;1030b16&quot;;
+   dct:published &quot;1983&quot;;
+   a brick:Book;
+   rdfs:label &quot;Set 1030 Activity Booklet 16 - Lifting with Pulleys&quot; .</code>
+  </pre>
+
+ <h3>Catalog (<code>brick:Catalog</code>)</h3>
+
+ <p>Lego have produced a number of lego catalogs that list available parts and sets. 
+ Each of the catalogs in the dataset are modelled with a type of <code>brick:Catalog</code>.</p>
+
+ <p>The URIs for the Catalog have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/book/{id}</code>
+ </blockquote>
+
+ <p>Where <code>id</code> is the unique code for the book in the lego part database</p>
+
+ <p>The following properties are associated with Catalog:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Category</td><td><code>brick:category</code></td><td>URI of the category associated 
+   with the catalog.</td>
+   
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td>Lego identifier for the 
+   catalog</td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>Title of the catalog</td>
+   
+   <tr><td>Published</td><td><code>dct:published</code></td><td>Year the catalog was published</td>
+   
+   <tr><td>Weight</td><td><code>brick:weight</code></td><td>Weight of the catalog</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Catalog:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/book/4130246&gt; 
+   brick:category &lt;http://data.kasabi.com/dataset/bricklink/category/375&gt;;
+   brick:weight &quot;4.8&quot;;
+   dct:identifier &quot;4130246&quot;;
+   dct:published &quot;2000&quot;;
+   a brick:Catalog;
+   rdfs:label &quot;2000 Insert - Shop at Home - version without train (4130246)&quot; .</code>
+  </pre>
+
+ <h3>Category (<code>brick:Category</code>)</h3>
+
+ <p>Lego parts, sets, themes and books, etc are all organized into a number of broad categories or 
+ themes. Each of the Category in the dataset are modelled with a custom type of <code>brick:Category</code>, but 
+ are also typed with the more commonly used <code>skos:Concept</code> class. The lego categories/themes 
+ thereby consist of a SKOS Concept Scheme which has been given the URI of:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/category</code>
+ </blockquote>
+
+
+ <p>The URIs for the Category have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/category/{id}</code>
+ </blockquote>
+
+ <p>The following properties are associated with Category:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+
+   <tr><td>Broader</td><td><code>skos:broader</code></td><td>URI of a parent category</td>
+      
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td>Unique identifier for the 
+   category</td>
+   
+   <tr><td>In Scheme</td><td><code>skos:inScheme</code></td><td>Reference to the concept scheme</td>
+
+   <tr><td>Narrower</td><td><code>skos:narrower</code></td><td>URI of a child category</td>
+   
+   <tr><td>Pref Label</td><td><code>skos:prefLabel</code></td><td>Preferred label of the 
+   categoy</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Category:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/category/576&gt; 
+   dct:identifier &quot;576&quot;;
+   a brick:Category,
+   skos:Concept;
+   skos:inScheme &lt;http://data.kasabi.com/dataset/bricklink/category&gt;;
+   skos:prefLabel &quot;Curriculum Activity Book&quot; .</code>
+  </pre>
+
+ <h3>Colour (<code>brick:Colour</code>)</h3>
+
+ <p>Each of the lego part colours in the dataset are modelled with a type of <code>brick:Colour</code>.</p>
+
+ <p>The URIs for the colours have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/colour/{id}</code>
+ </blockquote>
+
+ <p>The following properties are associated with Colour:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Colour Type</td><td><code>brick:colourType</code></td><td>Type/classification of 
+   the colour</td>
+   
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td></td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td></td>
+   
+   <tr><td>Rgb</td><td><code>brick:rgb</code></td><td>RGB value for the colour</td>
+   
+   <tr><td>Year Ended</td><td><code>brick:yearEnded</code></td><td>Year the colour was 
+   discontinued</td>
+   
+   <tr><td>Year Introduced</td><td><code>brick:yearIntroduced</code></td><td>Year 
+   the colour was introduced</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Colour:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/colour/67&gt; 
+   brick:colourType &quot;Metallic&quot;;
+   brick:rgb &quot;C0C0C0&quot;;
+   brick:yearIntroduced &quot;1957&quot;^^&lt;http://www.w3.org/2001/XMLSchema#year&gt;;
+   dct:identifier &quot;67&quot;;
+   a brick:Colour;
+   rdfs:label &quot;Metallic Silver&quot; .</code>
+  </pre>
+
+ <h3>Image (<code>foaf:Image</code>)</h3>
+
+ <p>The dataset references images of parts and sets available from the Bricklink website. 
+ Each of the images in the dataset are modelled with a type of <code>foaf:Image</code>.</p>
+
+ <p>The following properties are associated with images:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>A label for the image. Autogenerated from 
+   either the part or set name.</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Image:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://www.bricklink.com/PL/110a.gif&gt; a foaf:Image;
+   rdfs:label &quot;Picture of Lego part 110a&quot; .</code>
+  </pre>
+
+ <h3>Inventory (<code>brick:Inventory</code>)</h3>
+
+ <p>Some lego sets have inventories associated with them. Each of the inventories in the dataset 
+ are modelled with a type of <code>brick:Inventory</code>. An inventory is broken down into a 
+ list of Inventory Items (<code>brick:InventoryItem</code>).</p>
+
+ <p>The URIs for the Inventory have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/set/{id}/inventory</code>
+ </blockquote>
+
+ <p>Where <code>id</code> is the identifier for the lego set.</p>
+ 
+ <p>The following properties are associated with Inventory:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Has Part</td><td><code>dct:hasPart</code></td><td>Reference to a inventory 
+   item <code>brick:InventoryItem</code> that makes up the inventory</td>
+   
+   <tr><td>Set</td><td><code>brick:set</code></td><td>URI of the set that this 
+   inventory is associated with.</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Inventory:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/set/00-3/inventory&gt; 
+   brick:set &lt;http://data.kasabi.com/dataset/bricklink/set/00-3&gt;;
+   dct:hasPart &lt;http://data.kasabi.com/dataset/bricklink/set/00-3/inventory/3002old-1&gt;,
+   &lt;http://data.kasabi.com/dataset/bricklink/set/00-3/inventory/3003-1&gt;,
+   &lt;http://data.kasabi.com/dataset/bricklink/set/00-3/inventory/3004-11&gt;,
+   ...
+   &lt;http://data.kasabi.com/dataset/bricklink/set/00-3/inventory/old038-&gt;;
+   a brick:Inventory .</code>
+  </pre>
+
+ <h3>Inventory Item (<code>brick:InventoryItem</code>)</h3>
+
+ <p>Inventory items describe the relationship between a part, its colour and number in a particular 
+ lego set inventory. Each of the Inventory item in the dataset are modelled with a type of <code>brick:InventoryItem</code>.</p>
+
+ <p>The URIs for the Inventory item have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/set/{set}/inventory/{part}</code>
+ </blockquote>
+
+ <p>The following properties are associated with Inventory item:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Colour</td><td><code>brick:colour</code></td><td>URI of a lego brick colour</td>
+   
+   <tr><td>Is Part Of</td><td><code>dct:isPartOf</code></td><td>Inventory of which the item is a part</td>
+   
+   <tr><td>Is Primary Topic Of</td><td><code>foaf:isPrimaryTopicOf</code></td><td></td>
+   
+   <tr><td>Item</td><td><code>brick:item</code></td><td>URI of the lego item that is included 
+   in the inventory. Could be a part, book, or even set.</td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>Label for the inventory item</td>
+   
+   <tr><td>Value</td><td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#value</code></td><td>
+   Number of parts</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Inventory Item:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/set/00-1/inventory/29c01-1&gt; 
+   brick:colour &lt;http://data.kasabi.com/dataset/bricklink/color/1&gt;;
+   brick:item &lt;http://data.kasabi.com/dataset/bricklink/part/29c01&gt;;
+   dct:isPartOf &lt;http://data.kasabi.com/dataset/bricklink/set/00-1/inventory&gt;;
+   a brick:InventoryItem;
+   &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#value&gt; &quot;6&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt;;
+   rdfs:label &quot;6 x 29c01 in colour 1&quot;;
+   foaf:isPrimaryTopicOf &lt;http://www.bricklink.com/catalogItemInv.asp?S=00-1&gt; .</code>
+  </pre>
+
+ <h3>Minifig (<code>brick:Minifig</code>)</h3>
+
+ <p>Each of the Minifig in the dataset are modelled with a type of <code>brick:Minifig</code>.</p>
+
+ <p>The URIs for the Minifig have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/minifig/31310pb04</code>
+ </blockquote>
+
+ <p>The following properties are associated with Minifig:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Category</td><td><code>brick:category</code></td><td>URI of a lego category for the minifig</td>
+   
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td>Identifier for the minifig</td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>Name for the minifig</td>
+   
+   <tr><td>Weight</td><td><code>brick:weight</code></td><td>Weight of the minifig</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Minifig:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/minifig/31310pb04&gt; 
+   brick:category &lt;http://data.kasabi.com/dataset/bricklink/category/167&gt;;
+   brick:weight &quot;77&quot;;
+   dct:identifier &quot;31310pb04&quot;;
+   a brick:Minifig;
+   rdfs:label &quot;Duplo Figure Doll, Sarah Large, without Clothes&quot; .</code>
+  </pre>
+
+ <h3>Part (<code>brick:Part</code>)</h3>
+
+ <p>Each of the Part in the dataset are modelled with a type of <code>brick:Part</code>.</p>
+
+ <p>The URIs for the Part have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/part/{id}</code>
+ </blockquote>
+
+ <p>The following properties are associated with Part:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Category</td><td><code>brick:category</code></td><td>Category for the lego item</td>
+   
+   <tr><td>Depiction</td><td><code>foaf:depiction</code></td><td>URL for an image depicting the 
+   lego brick</td>
+   
+   <tr><td>Dimension X</td><td><code>brick:dimensionX</code></td><td>Width of the brick</td>
+   
+   <tr><td>Dimension Y</td><td><code>brick:dimensionY</code></td><td>Height of the brick</td>
+   
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td>Identifier for the brick</td>
+   
+   <tr><td>Is Primary Topic Of</td><td><code>foaf:isPrimaryTopicOf</code></td><td></td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>Name of the brick</td>
+   
+   <tr><td>Weight</td><td><code>brick:weight</code></td><td>Weight of the brick</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Part:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/part/10px6&gt; 
+   brick:category &lt;http://data.kasabi.com/dataset/bricklink/category/2&gt;;
+   brick:dimensionX &quot;24&quot;;
+   brick:dimensionY &quot;32&quot;;
+   brick:weight &quot;59&quot;;
+   dct:identifier &quot;10px6&quot;;
+   a brick:Part;
+   rdfs:label &quot;Baseplate 24 x 32 with Set 1601 Dots Pattern&quot;;
+   foaf:depiction &lt;http://img.bricklink.com/P/11/10px6.gif&gt;,
+   &lt;http://www.bricklink.com/PL/10px6.gif&gt;;
+   foaf:isPrimaryTopicOf &lt;http://www.bricklink.com/catalogItem.asp?P=10px6&gt; .</code>
+  </pre>
+
+ <h3>Product (<code>brick:Product</code>)</h3>
+
+ <p>Each of the Product in the dataset are modelled with a type of <code>brick:Product</code>.</p>
+
+ <p>The URIs for the Product have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/product/{id}</code>
+ </blockquote>
+
+ <p>The following properties are associated with Product:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Category</td><td><code>brick:category</code></td><td>URI of the lego category associated with 
+   the product</td>
+   
+   <tr><td>Dimension X</td><td><code>brick:dimensionX</code></td><td>Width of the product</td>
+   
+   <tr><td>Dimension Y</td><td><code>brick:dimensionY</code></td><td>Height of the product</td>
+   
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td>Identifier for the item</td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>Name of the item</td>
+   
+   <tr><td>Published</td><td><code>dct:published</code></td><td>Date that the product was published</td>
+   
+   <tr><td>Weight</td><td><code>brick:weight</code></td><td>Weight of the item</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Product:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/product/03063card08&gt; 
+	brick:category &lt;http://data.kasabi.com/dataset/bricklink/category/333&gt;;
+   brick:weight &quot;8&quot;;
+   dct:identifier &quot;03063card08&quot;;
+   dct:published &quot;1998&quot;;
+   a brick:Product;
+   rdfs:label &quot;Treasure Quest Door Hanger Scorpion's Lair&quot; .</code>
+  </pre>
+
+ <h3>Set (<code>brick:Set</code>)</h3>
+
+ <p>Each of the Lego set in the dataset are modelled with a type of <code>brick:Set</code>.</p>
+
+ <p>The URIs for the Set have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>http://data.kasabi.com/dataset/bricklink/set/{id}</code>
+ </blockquote>
+
+ <p>Where <code>id</code> is the identifier for the lego set.</p>
+ 
+ <p>The following properties are associated with Set:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   
+   <tr><td>Category</td><td><code>brick:category</code></td><td>Category in which the 
+   lego set is categorized</td>
+   
+   <tr><td>Depiction</td><td><code>foaf:depiction</code></td><td>URL of an image depicting the 
+   lego set. This is normally a photo of the box.</td>
+   
+   <tr><td>Dimension X</td><td><code>brick:dimensionX</code></td><td>Width of the lego set box</td>
+   
+   <tr><td>Dimension Y</td><td><code>brick:dimensionY</code></td><td>Height of the lego set box</td>
+   
+   <tr><td>Dimension Z</td><td><code>brick:dimensionZ</code></td><td>Depth of the lego set box</td>
+   
+   <tr><td>Identifier</td><td><code>dct:identifier</code></td><td>Identifier for the lego set</td>
+   
+   <tr><td>Instructions</td><td><code>brick:instructions</code></td><td>URL to a page showing 
+   instructions</td>
+   
+   <tr><td>Inventory</td><td><code>brick:inventory</code></td><td>URI of a resource describing the 
+   inventory of the lego set</td>
+   
+   <tr><td>Is Primary Topic Of</td><td><code>foaf:isPrimaryTopicOf</code></td><td>URL of a 
+   page(s) about the lego set</td>
+   
+   <tr><td>Label</td><td><code>rdfs:label</code></td><td>Name of the lego set</td>
+   
+   <tr><td>Published</td><td><code>dct:published</code></td><td>Year the lego set was published</td>
+   
+   <tr><td>Weight</td><td><code>brick:weight</code></td><td>Weight of the lego set.</td>
+   
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a Set:</p>
+
+  <pre>
+  <code>@prefix brick: &lt;http://data.kasabi.com/dataset/bricklink/schema/&gt; .
+@prefix dct: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+
+&lt;http://data.kasabi.com/dataset/bricklink/set/010-2&gt; 
+	brick:category &lt;http://data.kasabi.com/dataset/bricklink/category/167&gt;;
+   brick:dimensionX &quot;24&quot;;
+   brick:dimensionY &quot;16.1&quot;;
+   brick:dimensionZ &quot;7&quot;;
+   brick:inventory &lt;http://data.kasabi.com/dataset/bricklink/set/010-2/inventory&gt;;
+   brick:weight &quot;362&quot;;
+   dct:identifier &quot;010-2&quot;;
+   dct:published &quot;1973&quot;;
+   a brick:Set;
+   rdfs:label &quot;Pre-School Set&quot;;
+   foaf:depiction &lt;http://www.bricklink.com/SL/010-2.jpg&gt;;
+   foaf:isPrimaryTopicOf &lt;http://guide.lugnet.com/set/010&gt;,
+   &lt;http://www.bricklink.com/catalogItem.asp?S=010-2&gt;,
+   &lt;http://www.brickset.com/detail/?Set=010-2&gt;,
+   &lt;http://www.peeron.com/inv/sets/010-2&gt; .</code>
+  </pre>
+
+<h2>Data Conversion and Source Code</h2>
+
+<p>
+The data is sourced directly from the Bricklink website via their download forms.
+</p>
+
+<p>
+The code to support the conversion of this dataset has been open sourced. Developers interested in 
+collaborating to improve the modelling or fix up data conversion errors, can contribute to the project via github.
+</p>
+
+<p><a href="http://github.com/ldodds/bricklink">http://github.com/ldodds/bricklink</a></p>
+
+
+</body>
+</html>

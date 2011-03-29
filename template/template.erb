@@ -1,0 +1,74 @@
+<html>
+<body>
+
+<h1>Title</h1>
+
+<h2>Introduction</h2>
+
+<!-- cite sources, describe what it contains -->
+
+<h2>Potential Uses</h2>
+
+<!-- think of some ideas of how it might be used -->
+
+<h2>Data Model Diagram</h2>
+
+<p>
+The following diagram illustrates the key entities in the data model and their relationships.
+</p>
+
+<a href="datamodel.png"><img src="datamodel-small.png"/></a>
+
+<h2>Data Model</h2>
+
+<h3>Vocabularies</h3>
+
+<p>The full set of vocabularies used is as follows:</p>
+
+<table border="1">
+<tr><th>Name</th><th>Prefix</th><th>URI</th><th>Notes</th></tr>
+<% prefixes.keys.sort.each do |prefix| %>
+ <tr><td><%= prefix %></td><td><code><%= prefix %></code></td><td><code><%= prefixes[prefix] %></code></td><td></td></tr>
+<% end %>
+</table> 
+
+
+<p>The sections below outline which properties from these vocabularies have been used on the various entities 
+that can be found in the dataset.</p>
+
+<p>
+For readability, in the tables below, property URIs are given using their prefixed names, e.g. <code>dct:creator</code> 
+refers to: <code>http://purl.org/dc/terms/creator</code>.
+</p>
+
+<% config["types"].keys.sort.each do |name| %>
+
+ <h3><%= name %> (<code><%= results[name]["qname"].join(":") %></code>)</h3>
+
+ <p>Each of the <%= name.capitalize %> in the dataset are modelled with a type of <code><%= results[name]["qname"].join(":") %></code>.</p>
+
+ <p>The URIs for the <%= name.capitalize %> have been constructed using the following URI pattern:</p>
+
+ <blockquote>
+  <code>TODO</code>
+ </blockquote>
+
+ <p>The following properties are associated with <%= name.capitalize %>:</p>
+
+ <table border="1">
+   <tr><th>Property Name</th><th>Property URI</th><th>Notes</th></tr>
+   <% results[name]["properties"].keys.sort.each do |p| %>
+   <tr><td><%= p %></td><td><code><%= results[name]["properties"][p] %></code></td><td></td>
+   <% end %>
+ </table>
+
+  <p>The following example demonstrates how these properties are used to describe a <%= name %>:</p>
+
+  <pre>
+  <code><%= ERB::Util.html_escape results[name]["example"] %></code>
+  </pre>
+
+<% end %>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "types": {
+    "Minifig": "http://data.kasabi.com/dataset/bricklink/schema/Minifig",
+    "Catalog": "http://data.kasabi.com/dataset/bricklink/schema/Catalog",
+    "Inventory Item": "http://data.kasabi.com/dataset/bricklink/schema/InventoryItem",
+    "Product": "http://data.kasabi.com/dataset/bricklink/schema/Product",
+    "Book": "http://data.kasabi.com/dataset/bricklink/schema/Book",
+    "Part": "http://data.kasabi.com/dataset/bricklink/schema/Part",
+    "Inventory": "http://data.kasabi.com/dataset/bricklink/schema/Inventory",
+    "Category": "http://data.kasabi.com/dataset/bricklink/schema/Category",
+    "Image": "http://xmlns.com/foaf/0.1/Image",
+    "Colour": "http://data.kasabi.com/dataset/bricklink/schema/Colour",
+    "Set": "http://data.kasabi.com/dataset/bricklink/schema/Set"
+  },
+  "endpoint": "http://api.kasabi.com/api/sparql-endpoint-bricklink",
+  "prefixes": {
+	"brick": "http://data.kasabi.com/dataset/bricklink/schema/"
+  }
+}
+
