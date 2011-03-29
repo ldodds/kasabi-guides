@@ -6,27 +6,27 @@ INSTALLATION
 
 You'll need to be running Ruby 1.8.7 or higher and have installed the linkeddata, json and kasabi gems:
 
- sudo gem install linkeddata json kasabi
+	sudo gem install linkeddata json kasabi
 
 The code uses the Kasabi SPARQL client library and assumes that you have an environment variable set with your Kasabi API Key:
 
- export KASABI_API_KEY=abcdef...
+	export KASABI_API_KEY=abcdef...
 
 USAGE
  
 Extract examples:
 
- ruby bin/examples.rb examples/bricklink.json
+	ruby bin/examples.rb examples/bricklink.json
 
 Generate HTML docs:
 
- ruby bin/docs.rb examples/bricklink.json template/template.erb
+	ruby bin/docs.rb examples/bricklink.json template/template.erb
 
 The HTML template is an ERB template. See the provided template for an idea of what data is exposed.
 
 Probe endpoint for list of types and generate stub configuration:
 
- ruby bin/probe.rb http://api.kasabi.com/api/an-endpoint
+	ruby bin/probe.rb http://api.kasabi.com/api/an-endpoint
 
 The output is a basic stub JSON file that can be tweaked to generate docs and examples for specific types, as well as including prefixes.
 
@@ -34,17 +34,17 @@ CONFIGURATION
 
 The docs and examples scripts use a JSON file as configuration:
 
- {
-   "types": {
-    "Minifig": "http://data.kasabi.com/dataset/bricklink/schema/Minifig",
-    "Catalog": "http://data.kasabi.com/dataset/bricklink/schema/Catalog",
-    "Set": "http://data.kasabi.com/dataset/bricklink/schema/Set"
-   },
-   "endpoint": "http://api.kasabi.com/api/sparql-endpoint-bricklink",
-   "prefixes": {
-	 "brick": "http://data.kasabi.com/dataset/bricklink/schema/"
-   }
- }
+	 {
+	   "types": {
+		"Minifig": "http://data.kasabi.com/dataset/bricklink/schema/Minifig",
+		"Catalog": "http://data.kasabi.com/dataset/bricklink/schema/Catalog",
+		"Set": "http://data.kasabi.com/dataset/bricklink/schema/Set"
+	   },
+	   "endpoint": "http://api.kasabi.com/api/sparql-endpoint-bricklink",
+	   "prefixes": {
+		 "brick": "http://data.kasabi.com/dataset/bricklink/schema/"
+	   }
+	 }
 
 The configuration file should identify the Kasabi SPARQL Endpoint, prefixes to be used to generate tidy output, and the types for which examples or documentation should be generated.
 
